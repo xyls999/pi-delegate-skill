@@ -86,7 +86,10 @@ def main() -> int:
     if not executable:
         return emit(result(False, "command_not_found", None, "", "Pi CLI is not installed or is not available in PATH. Check `which pi` and `pi --version`.", cwd))
 
-    command = [executable, "-p", prompt, "--no-session"]
+    command = [executable, "--no-session"]
+    if mode in ("analyze", "review"):
+        command.extend(("--tools", "read,grep,find,ls"))
+    command.extend(("-p", prompt))
     if args.model:
         command.extend(("--model", args.model))
     if args.thinking:
